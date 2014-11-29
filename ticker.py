@@ -20,10 +20,10 @@ class TickerInc(TickerUser):
     def __init__(self, init_investment, incorp_id, corp_name, pri_shares, pub_shares, ticker_id, user_name):
         #Extend TickerUser class with methods and attribs of a company
         self.init_investment = init_investment
-        self.name = corp_name
+        self.corp_name = corp_name
         self._incorp_id = incorp_id
-        self._pri_shares = pri_shares
-        self._pub_shares = pub_shares
+        self.pri_shares = pri_shares
+        self.pub_shares = pub_shares
         self._ticker_price = init_investment / pri_shares
         super(TickerInc, self).__init__(ticker_id, user_name)
 
@@ -33,7 +33,7 @@ class TickerInc(TickerUser):
 
         #  assumes public share price and private share price are the same
         #  May add something more tricky later (e.g. discounted cash flow analogs)
-        return self._ticker_price * (self._pri_shares + self._pub_shares) - self.init_investment
+        return self._ticker_price * (self.pri_shares + self.pub_shares) - self.init_investment
 
     @property
     def ticker_price(self):
