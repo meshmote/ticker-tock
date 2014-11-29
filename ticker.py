@@ -4,22 +4,26 @@ from pathlib import *
 import ast
 
 
-def read_folio(path):
+def read_folio(ticker_id):
+    #Create and return dict object from txt file at location confirmed by get_folio
+    #Couldn't make "open" work with the Path object, so using literal filename constructed from ticker_id instead
 
-    with open(path, 'r') as inf:
+    lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
+    with open(lit_path, 'r') as inf:
         return ast.literal_eval(inf.read())
 
 
-def write_folio(path):
+def write_folio(path, ticker_id):
 
     pass
 
 
-def get_folio(path):
+def get_folio(path, ticker_id):
+    #Use Path object to determine if folio file exists and pass ticker_id to read or write method
     if path.is_file():
-        return read_folio(path)
+        return read_folio(ticker_id)
     else:
-        return write_folio(path)
+        return write_folio(path, ticker_id)
 
 
 class TickerUser(object):
@@ -30,7 +34,7 @@ class TickerUser(object):
         self.user_name = user_name
         self.folio_path = Path('{cur_dir}{unique_id}{f_ext}'.format
                                (cur_dir="./", unique_id=self.ticker_id, f_ext='.txt'))
-        self.ticker_folio = get_folio(self.folio_path)
+        self.ticker_folio = get_folio(self.folio_path, self.ticker_id)
 
     @property
     def ticker_id(self):
