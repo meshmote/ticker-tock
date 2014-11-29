@@ -31,12 +31,6 @@ def set_up2():
     return my_corp
 
 
-# def del_folio(path):
-#     #Use Path object to determine if folio file exists and delete it
-#     if path.is_file():
-#         path.unlink()
-
-
 def test_object_exists():
     my_corp = set_up()
     assert isinstance(my_corp, TickerInc)
@@ -54,11 +48,13 @@ def test_attrib_inits():
 
 
 def test_read_todict():
+    #Make sure 20001.txt is present and contains the string version of the assert before running this test
     my_corp = set_up()
     assert my_corp.ticker_folio == {'Scrub Dub': 15, 'Drone Pies': 30, 'Tweet Proxy': 25, 'Robo Nanny': 100}
 
 
 def test_write_fromdict():
+    #make sure 20045.txt is not present before running this test (should be a way to automate this)
     my_corp = set_up2()
     assert my_corp.ticker_folio == {}
     assert my_corp.folio_path.is_file()

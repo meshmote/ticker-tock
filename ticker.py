@@ -7,7 +7,6 @@ import ast
 def read_folio(ticker_id):
     #Read txt file at location confirmed by get_folio, then create and return dict object
     #Couldn't make "open" work with the Path object, so using literal filename constructed from ticker_id instead
-
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
     with open(lit_path, 'r') as inf:
         return ast.literal_eval(inf.read())
@@ -15,7 +14,6 @@ def read_folio(ticker_id):
 
 def write_folio(ticker_id, folio_dict):
     #Take folio dict object, convert to string, and write to folio file
-
     out_text = str(folio_dict)
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
     outfile = open(lit_path, 'w')
@@ -43,6 +41,7 @@ class TickerUser(object):
                                (cur_dir="./", unique_id=self.ticker_id, f_ext='.txt'))
         self.ticker_folio = get_folio(self.folio_path, self.ticker_id)
 
+    # ticker_id set up as property for later addition of unique id generation
     @property
     def ticker_id(self):
         return self._ticker_id
