@@ -33,6 +33,9 @@ def test_attrib_inits():
     assert my_corp.user_name == 'First User'
 
 
+def test_read2dict():
+    my_corp = set_up()
+    assert my_corp.ticker_folio == {'Scrub Dub': 15, 'Drone Pies': 30, 'Tweet Proxy': 25, 'Robo Nanny': 100}
 
 #def test_setter():
     #my_corp = set_up()

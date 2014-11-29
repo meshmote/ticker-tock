@@ -1,11 +1,36 @@
 __author__ = 'Robert W. Perkins'
 
+from pathlib import *
+import ast
+
+
+def read_folio(path):
+
+    with open(path, 'r') as inf:
+        return ast.literal_eval(inf.read())
+
+
+def write_folio(path):
+
+    pass
+
+
+def get_folio(path):
+    if path.is_file():
+        return read_folio(path)
+    else:
+        return write_folio(path)
+
 
 class TickerUser(object):
+
     def __init__(self, ticker_id, user_name):
         #Define basic user attributes and transaction methods
         self._ticker_id = ticker_id
         self.user_name = user_name
+        self.folio_path = Path('{cur_dir}{unique_id}{f_ext}'.format
+                               (cur_dir="./", unique_id=self.ticker_id, f_ext='.txt'))
+        self.ticker_folio = get_folio(self.folio_path)
 
     @property
     def ticker_id(self):
