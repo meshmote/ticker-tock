@@ -7,20 +7,15 @@ import json
 
 def read_folio(ticker_id):
     #Read txt file at location confirmed by get_folio, then create and return dict object
-    #Couldn't make "open" work with the Path object, so using literal filename constructed from ticker_id instead
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
-    #return json.load(open(lit_path))
-    with open(lit_path, 'r') as inf:
-        return ast.literal_eval(inf.read())
+    return json.load(open(lit_path))
 
 
 def write_folio(ticker_id, folio_dict):
     #Take folio dict object, convert to string, and write to folio file
-    # out_text = str(folio_dict)
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
-    # outfile = open(lit_path, 'w')
-    # outfile.write(out_text)
-    json.dump(folio_dict, open(lit_path, 'w'))
+    return json.dump(folio_dict, open(lit_path, 'w'))
+
 
 def get_folio(path, ticker_id):
     #Use Path object to determine if folio file exists and pass ticker_id to read or write method
