@@ -53,6 +53,7 @@ def test_read_todict():
     assert my_corp.ticker_folio == {'Scrub Dub': 15, 'Drone Pies': 30, 'Tweet Proxy': 25, 'Robo Nanny': 100}
 
 
+
 def test_write_fromdict():
     #make sure 20045.txt is not present before running this test (should be a way to automate this)
     my_corp = set_up2()
