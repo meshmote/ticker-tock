@@ -46,6 +46,11 @@ def read_closeprice():
     return json.load(open(lit_path))
 
 
+def write_closeprice(closeprice_dict):
+    lit_path = '{f_name}{f_ext}'.format(f_name='close_price', f_ext='.txt')
+    return json.dump(closeprice_dict, open(lit_path, 'w'))
+
+
 class TickerUser(object):
 
     def __init__(self, ticker_id, user_name):
@@ -85,7 +90,7 @@ class TickerInc(TickerUser):
 
         #  assumes public share price and private share price are the same
         #  May add something more tricky later (e.g. discounted cash flow analogs)
-        return self.ticker_closeprice * (self.pri_shares + self.pub_shares) - self.init_investment
+        return float(self.ticker_closeprice) * (self.pri_shares + self.pub_shares) - self.init_investment
 
 
 class TickerMarket(object):
