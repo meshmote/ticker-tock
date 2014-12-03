@@ -9,13 +9,15 @@ __author__ = 'Robert W. Perkins'
 def read_folio(ticker_id):
     #Read txt file at location confirmed by get_folio, then create and return dict object
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
-    return json.load(open(lit_path))
+    with open(lit_path, 'r') as file_handle:
+        return json.load(file_handle)
 
 
 def write_folio(ticker_id, folio_dict):
     #Take folio dict object, convert to string, and write to folio file
     lit_path = '{unique_id}{f_ext}'.format(unique_id=ticker_id, f_ext='.txt')
-    return json.dump(folio_dict, open(lit_path, 'w'))
+    with open(lit_path, 'w') as file_handle:
+        return json.dump(folio_dict, file_handle)
 
 
 def get_folio(path, ticker_id):
@@ -32,23 +34,27 @@ def get_folio(path, ticker_id):
 def read_memberincs():
     #Read mem_incs file, then create and return dict object
     lit_path = '{f_name}{f_ext}'.format(f_name='mem_incs', f_ext='.txt')
-    return json.load(open(lit_path))
+    with open(lit_path, 'r') as file_handle:
+        return json.load(file_handle)
 
 
 def write_memberincs(memincs_dict):
     lit_path = '{f_name}{f_ext}'.format(f_name='mem_incs', f_ext='.txt')
-    return json.dump(memincs_dict, open(lit_path, 'w'))
+    with open(lit_path, 'w') as file_handle:
+        return json.dump(memincs_dict, file_handle)
 
 
 def read_closeprice():
     #Read mem_incs file, then create and return dict object
     lit_path = '{f_name}{f_ext}'.format(f_name='close_price', f_ext='.txt')
-    return json.load(open(lit_path))
+    with open(lit_path, 'r') as file_handle:
+        return json.load(file_handle)
 
 
 def write_closeprice(closeprice_dict):
     lit_path = '{f_name}{f_ext}'.format(f_name='close_price', f_ext='.txt')
-    return json.dump(closeprice_dict, open(lit_path, 'w'))
+    with open(lit_path, 'w') as file_handle:
+        return json.dump(closeprice_dict, file_handle)
 
 
 class TickerUser(object):
