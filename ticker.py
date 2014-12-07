@@ -120,7 +120,7 @@ class TickerMarket(object):
 
     def __init__(self):
         #Read list of registered incs, get yesterday's closing prices, set initial daily average price to
-        #yesterday's close, and set daily volume to zero
+        #yesterday's close, set daily volume to zero, and read open_orders.txt into a list of TickerOrder objects
         self.member_incs = read_memberincs()
         self.close_price = read_closeprice()
         self.dayavg_price = self.close_price

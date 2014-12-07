@@ -98,6 +98,12 @@ def test_ticker_marketinit():
                                      "10001": "42.0", "10002": "20.0"}
     assert t_market.dayvolume == {"10010": 0, "10011": 0, "10012": 0, "10013": 0, "10001": 0, "10002": 0}
 
+    # Check that open_orders.txt has been translated correctly into list of TickerOrder objects
+    assert t_market.open_orderlist[0].corp == "10001"
+    assert t_market.open_orderlist[1].owner == "20003"
+    assert t_market.open_orderlist[2].price == 50
+    assert t_market.open_orderlist[0].num_4sale == 35
+
 
 def test_corpinit2market():
     # Check that initialized TickerIncs get their initial price information correctly from the TickerMarket object
@@ -108,7 +114,6 @@ def test_corpinit2market():
     assert my_corp.ticker_dayvolume == 0
 
 
-def test_
 ### Add data structure and methods for sell, buy orders, sale transactions, spot price computation,
 ### and end of trading actions
 ### Add data structures for product and feature descriptions (for other users to read)
