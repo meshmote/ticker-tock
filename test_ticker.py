@@ -107,6 +107,8 @@ def test_corpinit2market():
     assert my_corp.ticker_dayavg_price == unicode(120.0)
     assert my_corp.ticker_dayvolume == 0
 
+
+def test_
 ### Add data structure and methods for sell, buy orders, sale transactions, spot price computation,
 ### and end of trading actions
 ### Add data structures for product and feature descriptions (for other users to read)

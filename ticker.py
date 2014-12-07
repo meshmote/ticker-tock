@@ -57,6 +57,23 @@ def write_closeprice(closeprice_dict):
         return json.dump(closeprice_dict, file_handle)
 
 
+def read_openorders():
+    #Read open_orders file into dict, return list of TickerOrder objects
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_orders', f_ext='.txt')
+    with open(lit_path, 'r') as file_handle:
+        order_dict = json.load(file_handle)
+    return [TickerOrder(i, order_dict[i][0], order_dict[i][1], order_dict[i][2]) for i in order_dict]
+
+
+def write_openorders(openorders_list):
+    #Read components from list of TickerOrder objects to dict, then write dict to open_orders.txt
+    openorders_dict = {openorders_list[i].owner: [openorders_list[i].corp, openorders_list[i].price,
+                                                  openorders_list[i].num_4sale] for i in openorders_list}
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_orders', f_ext='.txt')
+    with open(lit_path, 'w') as file_handle:
+        return json.dump(openorders_dict, file_handle)
+
+
 class TickerUser(object):
 
     def __init__(self, ticker_id, user_name):
@@ -108,3 +125,13 @@ class TickerMarket(object):
         self.close_price = read_closeprice()
         self.dayavg_price = self.close_price
         self.dayvolume = {i: 0 for i in self.member_incs.iterkeys()}
+        self.open_orderlist = read_openorders()
+
+
+class TickerOrder(object):
+
+    def __init__(self, owner, corp, price, num_4sale):
+        self.owner = owner
+        self.corp = corp
+        self.price = price
+        self.num_4sale = num_4sale
