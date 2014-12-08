@@ -109,7 +109,7 @@ class TickerInc(TickerUser):
 
     @property
     def value(self):
-        #Return a simple valuation based on public and private share value
+        # Return a simple valuation based on public and private share value
 
         #  assumes public share price and private share price are the same
         #  May add something more tricky later (e.g. discounted cash flow analogs)
@@ -119,15 +119,16 @@ class TickerInc(TickerUser):
 class TickerMarket(object):
 
     def __init__(self):
-        #Read list of registered incs, get yesterday's closing prices, set initial daily average price to
-        #yesterday's close, set daily volume to zero, and read open_orders.txt into a list of TickerOrder objects
+        # Read list of registered incs, get yesterday's closing prices, set initial daily average price to
+        # yesterday's close, set daily volume to zero, and read open_orders.txt into a list of TickerOrder objects
         self.member_incs = read_memberincs()
         self.close_price = read_closeprice()
         self.dayavg_price = self.close_price
         self.dayvolume = {i: 0 for i in self.member_incs.iterkeys()}
         self.open_orderlist = read_openorders()
 
-    def is_sellorder(self, corp, price):
+    def has_sellorder(self, corp, price):
+        # Return true if a sell order exists in open_orderlist at or below the provided price for the given company
         good_offer = False
         for i in self.open_orderlist:
             if i.corp == corp and i.price <= price:
@@ -136,11 +137,15 @@ class TickerMarket(object):
         return good_offer
 
     def best_sellprice(self, corp, price):
-        best_price = price
-        for i in self.open_orderlist:
-            if i.corp == corp and i.price <= best_price:
-                best_price = i.price
-        return best_price
+        # Return the best price available for the given company, if a sell order for that company exists
+        if self.has_sellorder(corp, price):
+            best_price = price
+            for i in self.open_orderlist:
+                if i.corp == corp and i.price <= best_price:
+                    best_price = i.price
+            return best_price
+        else:
+            return None
 
 
 class TickerOrder(object):

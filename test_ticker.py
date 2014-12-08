@@ -105,6 +105,31 @@ def test_ticker_marketinit():
     assert t_market.open_orderlist[0].num_4sale == 35
 
 
+def test_tickermarket_methods():
+    t_market = tickermarket_setup()
+
+    # Test no sell order for this company
+    assert t_market.has_sellorder("11111", 45) is False
+
+    # Test above, between, and below existing order prices
+    assert t_market.has_sellorder("10010", 10) is False
+    assert t_market.has_sellorder("10010", 27) is True
+    assert t_market.has_sellorder("10010", 100) is True
+
+    # Test exactly on existing order prices
+    assert t_market.has_sellorder("10010", 50) is True
+    assert t_market.has_sellorder("10010", 45) is True
+    assert t_market.has_sellorder("10010", 24) is True
+
+    # Test above and below best price
+    assert t_market.best_sellprice("10010", 27) == 24
+    assert t_market.best_sellprice("10010", 10) is None
+    assert t_market.best_sellprice("10010", 100) is 24
+
+    # Test no price for this company
+    assert t_market.best_sellprice("11111", 100) is None
+
+
 def test_corpinit2market():
     # Check that initialized TickerIncs get their initial price information correctly from the TickerMarket object
     t_market = tickermarket_setup()
