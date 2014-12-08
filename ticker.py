@@ -127,6 +127,21 @@ class TickerMarket(object):
         self.dayvolume = {i: 0 for i in self.member_incs.iterkeys()}
         self.open_orderlist = read_openorders()
 
+    def is_sellorder(self, corp, price):
+        good_offer = False
+        for i in self.open_orderlist:
+            if i.corp == corp and i.price <= price:
+                good_offer = True
+                break
+        return good_offer
+
+    def best_sellprice(self, corp, price):
+        best_price = price
+        for i in self.open_orderlist:
+            if i.corp == corp and i.price <= best_price:
+                best_price = i.price
+        return best_price
+
 
 class TickerOrder(object):
 
