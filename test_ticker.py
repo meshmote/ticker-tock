@@ -73,7 +73,7 @@ def test_read_todict():
     # Make sure 20001.txt is present and contains the string version of the assert before running this test
     t_market = tickermarket_setup()
     my_corp = tickerinc_setup(t_market)
-    assert my_corp.ticker_folio == {'Scrub Dub': 15, 'Drone Pies': 30, 'Tweet Proxy': 25, 'Robo Nanny': 100}
+    assert my_corp.ticker_folio == {'10010': 15, '10011': 30, '10012': 25, '10013': 100}
 
 
 def test_write_fromdict():
@@ -99,10 +99,10 @@ def test_ticker_marketinit():
     assert t_market.dayvolume == {"10010": 0, "10011": 0, "10012": 0, "10013": 0, "10001": 0, "10002": 0}
 
     # Check that open_orders.txt has been translated correctly into list of TickerOrder objects
-    assert t_market.open_orderlist[0].corp == "10001"
-    assert t_market.open_orderlist[1].owner == "20003"
-    assert t_market.open_orderlist[2].price == 50
-    assert t_market.open_orderlist[0].num_4sale == 35
+    assert t_market.open_sellorderlist[0].corp == "10001"
+    assert t_market.open_sellorderlist[1].owner == "20003"
+    assert t_market.open_sellorderlist[2].price == 50
+    assert t_market.open_sellorderlist[0].num_4sale == 35
 
 
 def test_tickermarket_methods():
@@ -143,10 +143,13 @@ def test_buyorder():
 
     user_db = load_users()
     t_market = tickermarket_setup()
-    new_order = BuyOrder("20020", "10200", 27, 100)
-    t_market.execute_buyorder(new_order)
-    assert user_db[0].inc["10200"] == 1000
-    assert user_db[1].inc["10200"] == 500
+    new_buyorder = BuyOrder("20020", "10200", 27, 100)
+    t_market.execute_buyorder(new_buyorder)
+    for i in user_db:
+        if user_db[i].ticker_id == "20020":
+            assert user_db[i].ticker_folio["10200"] == 1000
+        if user_db[i].ticker_id == "20021":
+            assert user_db[i].ticker_folio["10200"] == 500
 
 
 ### Add data structure and methods for sell, buy orders, sale transactions, spot price computation,
