@@ -32,7 +32,7 @@ def get_folio(path, ticker_id):
 
 
 def read_memberincs():
-    #Read mem_incs file, then create and return dict object
+    #Read mem_incs file, then create and return dict object with ticker
     lit_path = '{f_name}{f_ext}'.format(f_name='mem_incs', f_ext='.txt')
     with open(lit_path, 'r') as file_handle:
         return json.load(file_handle)
@@ -95,14 +95,14 @@ class TickerUser(object):
 
 
 class TickerInc(TickerUser):
-    def __init__(self, init_investment, incorp_id, corp_name, pri_shares, pub_shares, ticker_id, user_name, my_market):
+    def __init__(self, init_investment, inc_id, corp_name, pri_shares, pub_shares, ticker_id, user_name, my_market):
         #Extend TickerUser class with methods and attribs of a company
         self.init_investment = init_investment
         self.corp_name = corp_name
-        self.incorp_id = incorp_id
-        self.ticker_closeprice = my_market.close_price[unicode(incorp_id)]
-        self.ticker_dayavg_price = my_market.dayavg_price[unicode(incorp_id)]
-        self.ticker_dayvolume = my_market.dayvolume[unicode(incorp_id)]
+        self.inc_id = inc_id
+        self.ticker_closeprice = my_market.close_price[unicode(inc_id)]
+        self.ticker_dayavg_price = my_market.dayavg_price[unicode(inc_id)]
+        self.ticker_dayvolume = my_market.dayvolume[unicode(inc_id)]
         self.pri_shares = pri_shares
         self.pub_shares = pub_shares
         super(TickerInc, self).__init__(ticker_id, user_name)

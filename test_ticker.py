@@ -60,7 +60,7 @@ def test_attrib_inits():
     t_market = tickermarket_setup()
     my_corp = tickerinc_setup(t_market)
     assert my_corp.value == 36200.0
-    assert my_corp.incorp_id == 10001
+    assert my_corp.inc_id == 10001
     assert my_corp.ticker_id == 20001
     assert my_corp.corp_name == 'Test Corp'
     assert my_corp.pri_shares == 1000
