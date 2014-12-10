@@ -74,6 +74,10 @@ def write_openorders(openorders_list):
         return json.dump(openorders_dict, file_handle)
 
 
+def load_users():
+    pass
+
+
 class TickerUser(object):
 
     def __init__(self, ticker_id, user_name):
@@ -147,11 +151,19 @@ class TickerMarket(object):
         else:
             return None
 
+    def execute_order(self, new_order):
+        purchase_remaining = new_order.quant
+        while self.has_sellorder(new_order.corp, new_order.price):
+            if
+
 
 class TickerOrder(object):
 
-    def __init__(self, owner, corp, price, num_4sale):
+    def __init__(self, owner, corp, price, quant):
         self.owner = owner
         self.corp = corp
         self.price = price
-        self.num_4sale = num_4sale
+        self.quant = quant
+        #Adding quant broke read_openorders, need to add this attrib to method
+
+class BuyOrder(TickerOrder):

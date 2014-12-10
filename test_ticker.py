@@ -139,6 +139,16 @@ def test_corpinit2market():
     assert my_corp.ticker_dayvolume == 0
 
 
+def test_buyorder():
+
+    user_db = load_users()
+    t_market = tickermarket_setup()
+    new_order = BuyOrder("20020", "10200", 27, 100)
+    t_market.execute_order(new_order)
+    assert user_db[0].inc["10200"] == 1000
+    assert user_db[1].inc["10200"] == 500
+
+
 ### Add data structure and methods for sell, buy orders, sale transactions, spot price computation,
 ### and end of trading actions
 ### Add data structures for product and feature descriptions (for other users to read)
