@@ -144,7 +144,7 @@ def test_buyorder():
     user_db = load_users()
     t_market = tickermarket_setup()
     new_order = BuyOrder("20020", "10200", 27, 100)
-    t_market.execute_order(new_order)
+    t_market.execute_buyorder(new_order)
     assert user_db[0].inc["10200"] == 1000
     assert user_db[1].inc["10200"] == 500
 

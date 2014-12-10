@@ -57,19 +57,36 @@ def write_closeprice(closeprice_dict):
         return json.dump(closeprice_dict, file_handle)
 
 
-def read_openorders():
-    #Read open_orders file into dict, return list of TickerOrder objects
-    lit_path = '{f_name}{f_ext}'.format(f_name='open_orders', f_ext='.txt')
+def read_opensellorders():
+    #Read open_sellorders file into dict, return list of TickerOrder objects
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_sellorders', f_ext='.txt')
     with open(lit_path, 'r') as file_handle:
         order_dict = json.load(file_handle)
-    return [TickerOrder(i, order_dict[i][0], order_dict[i][1], order_dict[i][2]) for i in order_dict]
+    return [SellOrder(i, order_dict[i][0], order_dict[i][1], order_dict[i][2]) for i in order_dict]
 
 
-def write_openorders(openorders_list):
+def write_opensellorders(opensellorders_list):
+    #Read components from list of TickerOrder objects to dict, then write dict to open_orders.txt
+    openorders_dict = {opensellorders_list[i].owner: [opensellorders_list[i].corp, opensellorders_list[i].price,
+                                                      opensellorders_list[i].num_4sale] for i in opensellorders_list}
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_sellorders', f_ext='.txt')
+    with open(lit_path, 'w') as file_handle:
+        return json.dump(openorders_dict, file_handle)
+
+
+def read_openbuyorders():
+    #Read open_orders file into dict, return list of TickerOrder objects
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_buyorders', f_ext='.txt')
+    with open(lit_path, 'r') as file_handle:
+        order_dict = json.load(file_handle)
+    return [BuyOrder(i, order_dict[i][0], order_dict[i][1], order_dict[i][2]) for i in order_dict]
+
+
+def write_openbuyorders(openorders_list):
     #Read components from list of TickerOrder objects to dict, then write dict to open_orders.txt
     openorders_dict = {openorders_list[i].owner: [openorders_list[i].corp, openorders_list[i].price,
                                                   openorders_list[i].num_4sale] for i in openorders_list}
-    lit_path = '{f_name}{f_ext}'.format(f_name='open_orders', f_ext='.txt')
+    lit_path = '{f_name}{f_ext}'.format(f_name='open_buyorders', f_ext='.txt')
     with open(lit_path, 'w') as file_handle:
         return json.dump(openorders_dict, file_handle)
 
@@ -129,12 +146,13 @@ class TickerMarket(object):
         self.close_price = read_closeprice()
         self.dayavg_price = self.close_price
         self.dayvolume = {i: 0 for i in self.member_incs.iterkeys()}
-        self.open_orderlist = read_openorders()
+        self.open_buyorderlist = read_openbuyorders()
+        self.open_sellorderlist = read_opensellorders()
 
     def has_sellorder(self, corp, price):
         # Return true if a sell order exists in open_orderlist at or below the provided price for the given company
         good_offer = False
-        for i in self.open_orderlist:
+        for i in self.open_sellorderlist:
             if i.corp == corp and i.price <= price:
                 good_offer = True
                 break
@@ -144,17 +162,37 @@ class TickerMarket(object):
         # Return the best price available for the given company, if a sell order for that company exists
         if self.has_sellorder(corp, price):
             best_price = price
-            for i in self.open_orderlist:
+            for i in self.open_sellorderlist:
                 if i.corp == corp and i.price <= best_price:
                     best_price = i.price
             return best_price
         else:
             return None
 
-    def execute_order(self, new_order):
-        purchase_remaining = new_order.quant
-        while self.has_sellorder(new_order.corp, new_order.price):
-            if
+    def has_buyorder(self, corp, price):
+        # Return true if a buy order exists in open_orderlist at or above the provided price for the given company
+        good_offer = False
+        for i in self.open_buyorderlist:
+            if i.corp == corp and i.price >= price:
+                good_offer = True
+                break
+        return good_offer
+
+    def best_buyprice(self, corp, price):
+        # Return the best price available for the given company, if a buy order for that company exists
+        if self.has_sellorder(corp, price):
+            best_price = price
+            for i in self.open_buyorderlist:
+                if i.corp == corp and i.price >= best_price:
+                    best_price = i.price
+            return best_price
+        else:
+            return None
+
+    def execute_buyorder(self, new_buyorder):
+        purchase_remaining = new_buyorder.quant
+        while self.has_buyorder(new_buyorder.corp, new_buyorder.price):
+            pass
 
 
 class TickerOrder(object):
@@ -164,6 +202,12 @@ class TickerOrder(object):
         self.corp = corp
         self.price = price
         self.quant = quant
-        #Adding quant broke read_openorders, need to add this attrib to method
+
 
 class BuyOrder(TickerOrder):
+    pass
+
+
+class SellOrder(TickerOrder):
+    pass
+
