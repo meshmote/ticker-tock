@@ -98,11 +98,35 @@ def test_ticker_marketinit():
                                      "10001": "42.0", "10002": "20.0"}
     assert t_market.dayvolume == {"10010": 0, "10011": 0, "10012": 0, "10013": 0, "10001": 0, "10002": 0}
 
-    # Check that open_orders.txt has been translated correctly into list of TickerOrder objects
-    assert t_market.open_sellorderlist[0].corp == "10001"
-    assert t_market.open_sellorderlist[1].owner == "20003"
-    assert t_market.open_sellorderlist[2].price == 50
-    assert t_market.open_sellorderlist[0].num_4sale == 35
+    # Check that open_sellorders.txt has been translated correctly into list of TickerOrder objects
+    for i in t_market.open_sellorderlist:
+        if i.owner == "20021":
+            assert i.corp == "10200"
+            assert i.price == 24
+            assert i.quant == 600
+        if i.owner == "20003":
+            assert i.corp == "10012"
+            assert i.price == 200
+            assert i.quant == 115
+        if i.owner == "20008":
+            assert i.corp == "10010"
+            assert i.price == 45
+            assert i.quant == 100
+
+    # Check that open_buyorders.txt has been translated correctly into list of TickerOrder objects
+    for i in t_market.open_buyorderlist:
+        if i.owner == "20022":
+            assert i.corp == "10021"
+            assert i.price == 50
+            assert i.quant == 35
+        if i.owner == "20025":
+            assert i.corp == "10020"
+            assert i.price == 45
+            assert i.quant == 100
+        if i.owner == "20023":
+            assert i.corp == "10022"
+            assert i.price == 200
+            assert i.quant == 115
 
 
 def test_tickermarket_methods():
@@ -146,10 +170,10 @@ def test_buyorder():
     new_buyorder = BuyOrder("20020", "10200", 27, 100)
     t_market.execute_buyorder(new_buyorder)
     for i in user_db:
-        if user_db[i].ticker_id == "20020":
-            assert user_db[i].ticker_folio["10200"] == 1000
-        if user_db[i].ticker_id == "20021":
-            assert user_db[i].ticker_folio["10200"] == 500
+        if i.ticker_id == "20020":
+            assert i.ticker_folio["10200"] == 1000
+        if i.ticker_id == "20021":
+            assert i.ticker_folio["10200"] == 500
 
 
 ### Add data structure and methods for sell, buy orders, sale transactions, spot price computation,
