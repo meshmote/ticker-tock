@@ -5,8 +5,8 @@ Idea valuation marketplace using stock price simulation
 
 This was a student project and I'd love some collaboration on to take it farther than what the course required.
 The basic concept is to create a virtual stock market of ideas, with a gamified economy that incentivizes
-the purchase and sale of simulated shares in start-up based on the idea.  With enough participation, and with a
-virtual economy that entrains near real-world stock buying decision behavior (we make them care about the fake money)
+the purchase and sale of simulated shares in a start-up based on the idea.  With enough participation, and with a
+virtual economy that entrains near-real-world stock buying decision behaviors (we make them care about the fake money)
 the site might create useful crowd-sourced information for potential investors in promising ideas.
 
 Core ideas are described by their authors on a unique web page.  They can be up or downvoted by site visitors.
